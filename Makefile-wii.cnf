@@ -1,0 +1,62 @@
+# Makefile configuration for Hatari.
+#
+# Use of '?=' for assignment allows overriding the given value with
+# an environment variable, e.g. like this "make CC=my-gcc"
+#
+# Following variables can be overridden:
+#   CC, CPPFLAGS, LDFLAGS, HOSTCC, DATADIR, CONFDIR, BINDIR
+
+# Set the C compiler (e.g. gcc)
+CC = powerpc-eabi-gcc
+
+# Include directories
+INCLUDE = -I$(DEVKITPRO)/libogc/include -I$(DEVKITPRO)/libogc/include/SDL
+
+DEFINES = -DHAVE_DIRENT_D_TYPE 
+
+# Architecture specific optimizations
+# 
+# Omap2/ARMv6:
+# OPTFLAGS += -mfpu=vfp -mfloat-abi=softfp -march=armv6 -finline-limit=64
+
+OPTFLAGS = -MMD -MP -MF -flto -O2 -DGEKKO -mrvl -mcpu=750 -meabi -mhard-float 
+
+# What warnings to use
+WARNFLAGS = -Wsign-compare \
+  -Wbad-function-cast -Wcast-qual  -Wpointer-arith \
+  -Wall -Wwrite-strings # -Wshadow -Wcast-align -Werror
+
+# Set flags passed to the compiler (e.g. optimization flags)
+CFLAGS := -g $(WARNFLAGS) $(INCLUDE) $(OPTFLAGS) $(DEFINES)
+
+# Set flags passed to the preprocessor (e.g. -I<include dir>)
+CPPFLAGS ?=
+
+# Additional libraries and linker flags:
+LIBS = -lz  # -lreadline
+LDFLAGS ?=  -g -DGEKKO -mrvl -mcpu=750 -meabi -mhard-float  -Wl,-Map,hatari.map
+
+# Ranlib - for generating an index of an archive
+RANLIB = ranlib
+
+# The native C compiler.
+# This is normaly the same as $(CC) unless you are using a cross compiler.
+HOSTCC ?= gcc
+
+# Native C compiler flags:
+HOSTCFLAGS = -g -O -Wall
+
+# Native linker flags:
+HOSTLDFLAGS =
+
+# SDL-Library configuration (compiler flags and linker options) - you normally
+# don't have to change this if you have correctly installed the SDL library!
+#SDL_CFLAGS := -I$(DEVKITPRO)/libogc/include
+SDL_LIBS := -L$(DEVKITPRO)/libogc/lib/wii -lSDL_ttf -lSDL_image -lsmpeg -lSDL -lpng -ljpeg -lvorbisidec -lfat -lwiiuse -lbte -lz -logc -lm -lwiikeyboard
+
+# Here you can define the default data directory for Hatari.
+# The emulator looks there for the default TOS image etc.
+# For example you can use the local directory with "." or if you want
+# a system-wide installation, use something like "/usr/share/hatari".
+#BIN2DATADIR ?= /apps/hatari
+
