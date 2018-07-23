@@ -3,7 +3,7 @@
 
 HatariWii is a port of [Hatari](https://hatari.tuxfamily.org/ "Hatari") an Atari ST(E), TT and falcon emulator. The Atari ST was a 16/32 bits home computer. The Wii version has specific features :
 
-- A virtual keyboard to send Aari ST keys to software.
+- A virtual keyboard to send Atari ST keys to softwares.
 - A mapper to bind ST keys to Wii controllers.
 - Mouse emulation with Wiimote pointer, classic and GameCube controller stick/d-pad.
 - 10 memory snapshots per game.
